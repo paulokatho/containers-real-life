@@ -1,0 +1,455 @@
+- CONTAINERS NA VIDA REAL
+====================================================================================
+
+	- Introdução ao Mundo dos Containers
+		
+
+
+- O QUE É UM CONTAINER?
+====================================================================================
+
+	- Containers e cgroups
+
+		- Definição do Linux Journal
+
+			- O Container é um derivado de uma feature do Linux chamada cgroup.
+			- O cgroup (Control groups) é uma feature (no fundo é um processo) do kernel do Linux quel ela limita, ela conta (ou seja, ela sabe que vai existir aquele recurso),
+				isola pra si CPU, Memoria, Disco e Rede para 1 ou mais processos
+
+			- Portanto:
+				- Container é um processo que utiliza recursos (Memoria, CPU, Disco e Rede) que são compartilhados pelo host
+
+				- Ao alocar aquele recurso é como se o recurso fosse dele mesmo (do Container)
+
+
+- A GRANDE SACADA
+====================================================================================
+
+	- Padrão
+		- A grande sacada, algo que mudou o jogo foi a Padronização
+
+	- Viagem de Trem
+		- Para entender melhor sobre Padrão, vamos ao seguinte exemplo da vida real
+
+		- No Brasil não é possível ir do extremo sul do país até o extremo norte de trem
+		- Saber porque?
+
+			- Bitola
+				- O grande lance desse problema é algo chamado "Bitola"
+				- As Bitolas dos trilhos de trem no Brasil não são padronizadas
+					- Elas mudam faltamente de um Estado para outro e muitas vezes muda entre cidades também
+
+			- Se fosse para faze essa viagem não valeria a pena porque:
+				- Haveria muita troca de trens, ou seja, muita baldeação de trens
+				- Também seria muito caro
+ sudo docker run hello-world
+
+			- Diferente dos EUA que você pode pegar um trem na Florida e ir até o Canadá
+
+		- Então quando você tras padrão para alguma coisa:
+			- A indústria tem mais facilidade para adotar
+			- Quem cria tecnologias em volta disso tem mais facilidade de trabalhar
+			- Então você tras beneficios para o ecossitema inteiro
+
+			- E foi isso que o Docker trouxe
+
+		- Container por Container é uma funcionalidade que existe a muito tempo, muito antes do Docker, porém não existia o quê?
+			- NÃO EXISITIA PADRÃO
+
+			- Com Padrão, revolucionou tudo
+
+		- Hoje mais de 90% do que é consumido no mundo é transportado por um container
+			- Provavelmente algum material da cadeira que você utiliza, alguma peça do seu celular... passou por algum Container
+
+
+- CRIADOR DO CONTAINER - NA VIDA REAL
+====================================================================================
+	
+	- Malcom McLean
+		Ele foi um empresário do setor de transportes que desenvolveu o moderno contêiner intermodal, que revolucionou o transporte e o comércio internacional na segunda metade do século XX. 
+		A conteinerização levou a uma redução significativa no custo de transporte de carga, eliminando a necessidade de manuseio repetido de peças individuais de carga, 
+		e também melhorou a confiabilidade, reduziu o roubo de carga e cortou os custos de estoque ao encurtar o tempo de trânsito.
+
+		- A criação
+			- Então ele criou algo que fosse:
+
+				- Padronizado
+				- Isolado
+				- Auto Suficiente
+
+			- O Container, quando você vai levar algo dentro dele, ele tem que ter tudo que é necessário para poder carregar o que tem dentro dele
+			- Exemplo:
+				- Se você vai carregar algo dentro dele e tem que ser refrigerado
+				- O Container tem que ter a refrigeração
+				- A energia para manter a refrigeração, independente de nenhum agente externo
+				- Se for necessário um determinado nível de umidade, dentro dele tem que ter condições de manter aquele nível de umidade
+				
+			- Depois disso tudo muda:
+				- O Container pode ser carregado por diversos tipos de transporte como
+					- Navio
+					- Avião
+					- Caminhão
+					- Trem
+
+					- Por causa dos padrões e Auto Suficiencia mudou a forma como se transporta mercadorias
+
+
+- SEPARAÇÃO DE RESPONSABILIDADES
+====================================================================================
+
+	- Devs
+		- Cuida do que roda dentro do container
+			- Código
+			- Bibliotecas
+			- Dados
+
+	- Ops
+		- Cuida do que roda fora do container
+			- Logging
+			- Rede
+			- Disponibilidade
+
+
+- CONTAINER vs CONTAINER
+====================================================================================
+
+	- Imagem de Container
+		- Ainda não é o container, é só a imagem
+		- Imagem de container é a base do container
+		- Uma imagem é uma lista de definições utilizadas por uma intância de container
+
+	- "O" Container
+		- Um container é uma instância (processo) de uma imagem de container
+
+
+- REGISTRO ou REGISTRY
+====================================================================================
+
+	- Um Registro é um serviço que responde à Registry API e contém repositórios de imagens
+
+		- O Docker Hub é um registry que contém um monte de imagens lá
+
+	- Um Registro Local é onde as imagens que você construiu ou baixou ficam armazenadas localmente (laptop, desktop, etc)
+
+		- Exemplo:
+			- Se eu quiser baixar a imagem do Open JDK, eu baixo do repositório remoto para o meu repositório local
+
+	- Um Registro Remoto é de onde você baixa imagens ou para onde você envia imagens
+		- Um exemplo é o Docker Hub
+
+			- Porquê utilizar um repositório remoto?
+				- Pois se eu precisar fazer um deploy da nossa aplicação em uma nuvem publica
+				- Então esse Registry ou repositório remoto armazena a nossa imagem, então a nuvem publica puxa essa imagem no seu Registry público ou privado
+					 quando for fazer deploy
+
+
+- DOCKERLESS
+====================================================================================
+
+	- Aplicações que tinham Containers, existia um Pipeline daquela aplicação para fazer o deploy daquela aplicação, então tinha um passo que tinha que fazer aquela imagem
+		e fazer um Push no Registry para depois fazer o deploy
+		
+		- Na epoca começou a falar de Jenkins (em torno de 2016)
+			- Na maquina que tinha o Jenkins que ia fazer todo seu Pipeline, precisava instalar o Docker naquela máquina 
+
+			- E Porquê tinha que fazer isso?
+				- Porque tinha um momento que tinha que rodar um Docker Build
+				- Construir a imagem daquele Container e fazer um Docker Push e enviar a imagem para o Registry
+
+			- Então precisava de todos os recursos que o Docker trazia, todos os processos que rodavam embaixo dele
+				- Mas na verdade não ia rodar Docker naquela maquina
+				- Porem precisava rodar Docker para construir imagens naquela maquina
+
+				- Com o tempo se viu que isso era um consumo desnecessário de recurso e um uso desnecessário de ferramentas
+
+		- Daí se criou um lugar que contém ferramentas chamado
+			- Dockerless
+
+			- Que são ferramentas que você consegue construir Containers sem precisar ter uma Docker Engine Local
+
+			- Opções para fazer isso
+				- Jib
+				- jKube
+				- Buildah
+				- Kaniko
+
+			- O jib cria imagens de Containers e podemos facilmente utilizar ele no Quarkus, por exemplo
+
+		  - Então com o "jib" eu não precisaria ter um Docker na minha maquina para criar uma imagem, porém acabamos tendo, pois fazemos varias outras coisas com Docker
+
+
+- OPÇÕES AO DOCKER
+====================================================================================
+
+	- podman-desktop.io
+
+		- É uma solução, uma opção ao Docker que é muito boa
+			- Tem algum aprendizado ali, pois tem algumas peculiaridades da ferramenta, tanto de comandos como alguma forma de implementar
+			- Mas não é algo de outro mundo não
+
+
+- MÃO NA MASSA
+====================================================================================
+
+- Vamos fazer
+	- Criar 1 imagem e fazer o deploy no Registry Remoto
+
+
+	-------------------------------
+	- Criando Exemplo
+	-------------------------------
+
+	- Criar uma aplicação padrão, só para explicar... não vamos perder tempo criando uma aplicação mais complexa... só 1 para poder mexer com o Docker
+
+		-----------------------------------------
+		- Comando no terminal do Quarkus
+		-----------------------------------------
+
+			mvn "io.quarkus:quarkus-maven-plugin:create" \
+			-DprojectGroupId="com.katho" \
+			-DprojectArtifactId="tutorial-app" \
+			-DprojectVersion="1.0-SNAPSHOT" \
+			-DclassName="ContainerResource" \
+			-Dpath="hello"
+
+
+		-----------------------------------------
+		- Criar Dockerfile
+		-----------------------------------------
+		- Digitar no terminal
+			
+			cat <<EOF > Dockerfile
+			FROM openjdk:17.0.2-slim
+
+			COPY target/quarkus-app/lib/ /deployments/lib/
+			COPY target/quarkus-app/quarkus-run.java /deployments/app.jar
+			COPY target/quarkus-app/app/ /deployments/app/
+			COPY target/quarkus-app/quarkus/ /deployments/quarkus/
+
+			CMD ["java", "-jar", "/deployments/app.jar"]
+			EOF
+
+
+		-----------------------------
+		-Entendendo o Dockerfile
+		-----------------------------
+
+		- FROM openjdk:17.0.2-slim
+
+			- FROM quer dizer que ele vai pegar uma imagem do openjdk dessa versão específica
+			- Quando não tem nenhum Registry falando de onde vem a imagem e está só o "name" da imagem, por default ele vai buscar
+				direto no Docker Hub
+
+			- Tem imagem de tudo praticamente hoje em dia
+			- Mas sempre utilizem as "Imagens Oficiais"
+
+		- Temos 4 COPY's
+			- COPY target/quarkus-app/lib/ /deployments/lib/
+			- COPY target/quarkus-app/quarkus-run.java /deployments/containers-real-life.jar
+			- COPY target/quarkus-app/app/ /deployments/app/
+			- COPY target/quarkus-app/quarkus/ /deployments/quarkus/
+
+				 - Esses COPY's serão usados para criar os diretorios "target"
+				 - "target" é o package que o "mvn" cria para jogar as coisas do projeto
+				 	- Dentro dele ficam também o próprio .jar do projeto
+
+				 - Então aqui nesse "target" estou colcando tudo que precisamos para poder rodar a nossa aplicação
+				 - Colocando tudo dentro desse nosso container
+
+		- CMD ["java", "-jar", "/deployments/containers-real-life.jar"]
+
+			- É o comando que vamos utilizar para rodar nossa aplicação
+			
+
+		- Então tudo isso é um exemplo de uma imagem de container que iremos criar
+
+
+		- PARA CONSTRUIR IMAGENS
+
+			-------------------------------------
+			- Digitar no terminal do projeto
+			-------------------------------------
+				- "docker build -t containers-real-life"
+
+					- "-t"
+						- Isso é de tag, ou seja, vai criar uma tag com esse nome para nossa imagem
+					- "." 
+						- Com o ponto estou dizendo para o Docker Build que tem um Dockerfile local e que pode usar ele para costruir a imagem
+
+			- Esse processo fica CACHEADO e na proxima vez que rodarmos o docker build ele vai alterar somente o que for novo,
+				isso deixa mais rapido o processo
+
+		- ONDE ESTÁ A IMAGEM QUE CRIAMOS?
+
+			- "docker images"
+
+				- Para saber onde está nossa imagem, rodamos o comando acima
+				- Aí ele vai exibir a nossa imagem "containers-real-life"
+		
+		- A partir daqui ficou um pouco mais complicado, pois não deu para acompanhar tudo o conteudo do curso
+
+
+
+		
+		---------------------------------------------------------
+		- Erro: Remover Imagens Múltiplas com Mesma Referencia
+		---------------------------------------------------------
+
+			- Se você tiver um erro de "image is referenced in multiple repositories" e for apagar uma imagem, é só forçar a remoção com o comando
+
+				- "docker rmi -f 'id-da-imagem"
+
+		---------------------------------------------------------
+		- Criar Um Container e Rodar com Comandos Separados
+		---------------------------------------------------------
+
+			- "docker create --name 'nome-do-container' 'referenciar-sua-imagem'"
+
+				- Esse comando diz ao docker:
+					- Cria uma imagem com o nome-do-container e que tem a referencia o 'nome-da-imagem' que você criou com o comando "docker build -t containers-real-life"
+
+			- ONDE ESTA O CONTAINER?
+
+				- "docker ps"
+
+					- Com esse comando você não vai ver seu container ainda
+					- Pois você tem o container, mas ele não esta rodando ainda
+
+				- "docker ps -a"
+
+					- Agora é possível ver seu container, mesmo que ele não estiver rodando
+					- Ele vai estar com STATUS = CREATED
+					- Então ele não esta rodando ainda
+
+				- "docker start tutorial"
+
+					- Agora seu container vai rodar e vai aparecer com o comando "docker ps"
+
+				- "docker storp 'nome-do-container"
+					- Você para de rodar o container
+
+				- "docker rm 'nome-do-container"
+					- Remove o container
+					- Esse comando não é "docker rmi", pois rmi é para remover imagem.... remover container é só usar o "rm" mesmo
+
+
+		---------------------------------------------------------
+		- Criar Um Container e Rodar com Comandos Juntos
+		---------------------------------------------------------
+
+			- "docker run --name 'nome-do-container' 'nome-da-imagem-que-ele-vai-referenciar'"
+
+				- Esse comando cria o container e já roda o container
+				- ESSE COMANDO DEIXA O TERMINAL "PRESO" EXIBINDO OS LOGS DO CONTAINER
+
+		-------------------------------------------------------------------------------------------------------------------------
+		- Criar Um Container e Rodar com Comandos Juntos - SEM DEIXAR "PRESO" O TERMINAL QUE RODA VAI ESTAR RODANDO O CONTAINER
+		-------------------------------------------------------------------------------------------------------------------------
+
+			- "docker run -d --name 'nome-do-container' 'nome-da-imagem-que-ele-vai-referenciar'"
+
+				- Dessa forma o seu container vai rodar e não vai deixar "PRESO" o seu terminal
+
+			- "docker logs 'nome-do-container'"
+
+				- Assim você consegue ver os logs
+
+			- "docker logs -f 'nome-do-container"
+
+				- Agora você consegue ACOMPANHAR os logs em tempo "real"
+
+			- "CTRL + C"
+
+				- Agora quando você usar o comando CTRL + C ... vai parar só os logs e não o container que rodou nessa sua janela do terminal
+
+
+		---------------------------------------------------------
+		- Como Acessar Esse Container
+		---------------------------------------------------------
+
+			- Quarkus
+				- Se estivermos rodando o Quarkus, por padrão ele tem um "endpoint chamado /hello"
+				
+					- "docker ps"
+
+						- Você vai ver seu container, porém veja o campo "PORTS" - ele vai estar vazio... e porquê isso?
+
+							- POIS TUDO QUE VOCÊ FAZ EM CONTAINER TEM QUE EXPLICITAR O QUE VOCÊ QUER FAZER
+							- Então por padrão não tem nenhuma porta aberta quando você cria e roda o container
+
+							- Não tem nenhuma porta "Exposed" desse nosso container
+
+					- VOCÊ NÃO VAI CONSEGUIR ACESSAR SEU SERVIÇO 
+
+				- Vamos ter que rodar e criar nosso container com outros parâmetros para conseguir rodar esse container e "EXPOR" uma porta para poder acessar os serviços dele
+
+				- "docker run -d --name 'nome-do-container' -p 8080:8080 'nome-da-imagem-que-ele-vai-referenciar'"
+
+					- 8080:8080
+
+						- 8080
+							- Esse primeiro 8080 é a porta que as aplicações externas vão chegar até na minha aplicação do mundo externo
+							- Quem vem de fora é por ela que vai conseguir acessar a aplicação
+							- É como você vai expor sua porta "interna" para o mundo "externo"
+
+								- Poderia ser algo diferente como:
+									- 8888:8080
+									- 80:8080
+								- Depende de como será exposto de acordo com as regras de arquitetura
+
+						- 8080
+							- O segundo 8080 é a porta da aplicação que está DENTRO do container.
+							- E será nela que vai ser direcionado todas as requisições 
+
+				- "docker ps"
+					- Agora com esse comando é possível ver no campo "PORTS" algo como:
+
+						- 0.0.0.0:8080>8080/tcp
+
+						- Quer dizer que agora tem as portas expostas
+
+				- "curl localhost:8080/hello"
+
+					- Agora se você tiver algum "endpoint", será possível acessar os serviços com a "url/uri/recurso" que você quer acessar
+
+
+
+
+
+
+		---------------------------------------------------------
+		- Entrar no Container
+		---------------------------------------------------------
+
+			- COMO ENTRAR NO CONTAINER E VER O QUE TEM LÁ DENTRO
+
+
+				- "docker exec -it 'nome-do-container' /bin/bash"
+
+					- "-it"
+						- Significa interação. Para interar com o container
+
+					- "/bin/bash"
+						- É o tipo de terminal que vou usar lá dentro do container
+
+
+					- Depois de rodar o "docker exec"
+
+						- Repare que seu terminal vai mudar o "admin"
+
+						- Digitar "ls"
+							- Você vai ver que nesse "NOSSO" caso de exemplo do Elder na confraria, vai ter nossa pasta "deployments" dentro do container que estava descrito no noss Dockerfile
+
+						- "ls -l /deployments"
+							- Vai ver que estarão os outros diretórios e aplicativos que colocamos no nosso Dockerfile
+
+							- Para esse exemplo irão estar
+
+								- app
+								- app.jar
+								- lib
+								- quarkus
+
+
+
+			Parei em: 41:19
