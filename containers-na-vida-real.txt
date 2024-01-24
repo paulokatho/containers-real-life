@@ -418,7 +418,7 @@
 
 
 		---------------------------------------------------------
-		- Entrar no Container
+		- Mexer Dentro do Container
 		---------------------------------------------------------
 
 			- COMO ENTRAR NO CONTAINER E VER O QUE TEM LÁ DENTRO
@@ -451,5 +451,91 @@
 								- quarkus
 
 
+				- Dentro do container vc pode rodar os comandos normais que utiliza no seu dia a dia em seu linux
 
-			Parei em: 41:19
+				EX:
+					- java -version
+					- mvn -v (se nao tiver maven ele não vai exibir)
+					- cat /etc/os-release
+						- versão do sistema operacional que esta la no container
+					- curl localhost:8080/hello
+						- se tiver o curl rodando, vai exibir o nosso "hello world" que está na imagem que geramos do docker
+
+
+		---------------------------------------------------------
+		- Container em Ambiente Externo
+		---------------------------------------------------------
+
+			- Como colocar a imagem em um Registry Publico - Docker Hub nesse caso
+				- Vamos colocar a imagem em um ambiente externo que será o Docker Hub
+			
+			1. Precisamos preparar essa imagem
+				- Ela esta pronto a nível de aplicação, mas precisamos fazer um ajuste para poder enviar ela
+
+				- Esse ajuste é criar uma "tag" para fazer um push da aplicação para o Docker Hub
+
+			2. Criando a tag
+
+				- Digitar
+					- "docker tag 'nome-da-imagem' kathodocker/'nome-da-imagem"
+
+						- Então o comando fica:
+
+							- docker tag -> cria a tag
+							- nome da imagem
+							- kathodocker -> meu usuário no docker hub
+							- depois vem o nome da imagem que vai ser criada no nosso Docker Hub
+
+			3. Digite no terminal
+
+				- "docker images"
+					- Agora vai aparecer 2 imagens
+						- imagem que ja temos que é "nome-da-imagem"
+						- imagem com a tag e o nosso nome de usuário (kathodocker)
+
+						- Mas se formos reparar o campo IMAGE ID é o mesmo
+						- Ou seja, é uma outra tag para outra imagem
+
+			4. Logar no Registry Remoto
+
+				- Digitar o comando:
+
+					- "docker push kathodocker/'nome-da-imagem'"
+
+					- Com esse comando vamos nos conectar ao Docker Hub e enviar nossa imagem para lá
+
+			5. Ir até o Docker Hub para ver se a nossa imagem está lá certinho
+
+
+		------------------------------------------------------------------------
+		- Tag - Fazer o Build da Imagem e já Criar a Imagem com a TAG dela
+		------------------------------------------------------------------------
+		
+			- É interessante já criar a sua imagem com a tag que vai ser utilizada para subir para o Registry Remoto
+
+			- Nos passos anteriores, criamos passo a passo para ver como cada passo funciona, mas com o comando abaixo 
+				é possível já criar junto o build e a tag que vai subir para o Registry Remoto
+
+				- Comando:
+
+					- "docker build -t kathodocker/'nome-da-imagem'"
+
+					- "docker images"
+
+						- Agora vai aparecer a nova imagem com a tag certa e vai estar associada ao mesmo IMAGE ID da imagem inicial
+
+
+---------------------------------------------------------
+- CONCLUSÃO DESSE ESTUDO
+---------------------------------------------------------
+
+
+	- Esse é um conteúdo introdutório para vermos como funciona a manipulação do Docker na maquina. Entender um pouco dos comandos e das possibilidades que podemos
+		ter entendendo um pouco do que estamos fazendo e tendo o Docker na "nossa mão"
+	- Poder manipular ele em nossa maquina e tudo mais
+
+
+	- O FUTURO É CONTAINER PARA TUDO
+
+		- O FUTURO JÁ ESTA AQUI!!!
+
